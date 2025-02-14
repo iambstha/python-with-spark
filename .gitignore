@@ -1,0 +1,4 @@
+data/large_fixed_width_data_1gb.txt
+data/large_fixed_width_data_6gb.txt
+venv/**
+.env
