@@ -41,7 +41,7 @@ def startReadAndWrite(spark: SparkSession) -> None:
     print("✅ Spark read and write started")
 
     sc = spark.sparkContext
-    file_path = "data/large_fixed_width_data_6gb.txt"
+    file_path = "data/large_fixed_width_data_1gb.txt"
 
     file_size = os.path.getsize(file_path) / (1024 * 1024)
     print(f"📁 File Size: {file_size:.2f} MB")
@@ -52,7 +52,8 @@ def startReadAndWrite(spark: SparkSession) -> None:
     read_start_time = time.time()
     lines = sc.textFile(file_path, minPartitions=num_partitions)
     mappedLines = lines.map(parse_fixed_width)
-    df = spark.createDataFrame(mappedLines, schema).repartition(num_partitions)
+    # df = spark.createDataFrame(mappedLines, schema).repartition(num_partitions)
+    df = spark.createDataFrame(mappedLines, schema).repartition("state", "city")
 
     read_elapsed_time = time.time() - read_start_time
     print(f"📊 File read completed in {read_elapsed_time:.2f} seconds!")
